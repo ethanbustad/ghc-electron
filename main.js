@@ -15,6 +15,23 @@ function createWindow () {
   // and load the Google Hangouts Chat site
   mainWindow.loadURL('https://chat.google.com')
 
+  // open external links (with target=_blank) in default browser
+  mainWindow.webContents.on('new-window', (event, url, frameName) => {
+    // have to let the _blank window render, or it will block the ultimate destination as well
+    if (frameName != '_blank') {
+      event.preventDefault()
+
+      electron.shell.openExternal(url)
+
+      // now that the ultimate destination has rendered, close the _blank window
+      for (let win of BrowserWindow.getAllWindows()) {
+        if (win.frameName == '_blank') {
+          win.close()
+        }
+      }
+    }
+  })
+
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object
