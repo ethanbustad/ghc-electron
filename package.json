@@ -1,20 +1,18 @@
 {
-  "name": "electron-quick-start",
+  "name": "ghc-electron",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A Hangouts Chat wrapper",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/ethanbustad/ghc-electron",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Hangouts",
+    "Chat"
   ],
-  "author": "GitHub",
+  "author": "ethanbustad",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^1.8.4"
