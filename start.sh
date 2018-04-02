@@ -6,9 +6,11 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 cd $SCRIPTPATH
 
+COMMAND=$(command -v npm >/dev/null 2>&1 && echo "npm" || echo "node")
+
 if [ ! -e "node_modules" ]
 then
-	npm install
+	$COMMAND install
 fi
 
-npm start
+$COMMAND start
