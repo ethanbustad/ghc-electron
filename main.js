@@ -15,14 +15,9 @@ function createWindow () {
   // and load the Google Hangouts Chat site
   mainWindow.loadURL('https://chat.google.com')
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
+    // Dereference the window object
     mainWindow = null
   })
 }
@@ -48,6 +43,3 @@ app.on('activate', function () {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
