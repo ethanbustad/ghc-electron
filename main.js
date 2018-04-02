@@ -10,7 +10,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 1024, height: 768})
 
   // and load the Google Hangouts Chat site
   mainWindow.loadURL('https://chat.google.com')
