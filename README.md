@@ -19,6 +19,17 @@ npm install
 npm start
 ```
 
+Or, more simply,
+
+```bash
+# Clone this repository
+git clone https://github.com/ethanbustad/ghc-electron
+# Run the app
+./ghc-electron/start.sh
+```
+
+`start.sh` can also be used on startup to automatically open the application.
+
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
 ## License
