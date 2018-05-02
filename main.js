@@ -13,6 +13,12 @@ function createWindow () {
   // and load the Google Hangouts Chat site
   mainWindow.loadURL('https://chat.google.com')
 
+  mainWindow.on('close', function (event) {
+    event.preventDefault();
+
+    mainWindow.hide();
+  });
+
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object
@@ -54,7 +60,7 @@ function createWindow () {
   // Linux won't show the app icon unless it has a menu
   const contextMenu = Menu.buildFromTemplate([
     {label: 'Refresh', role: 'forcereload', type: 'normal'},
-    {label: 'Quit', role: 'quit', type: 'normal'}
+    {click: function(mi, bw, e) { mainWindow.destroy(); }, label: 'Quit', type: 'normal'}
   ]);
 
   appIcon.setContextMenu(contextMenu);
