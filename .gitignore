@@ -1,1 +1,4 @@
+images/*
+!images/transparent.png
+
 node_modules

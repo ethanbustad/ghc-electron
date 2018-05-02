@@ -1,4 +1,6 @@
-const {app, BrowserWindow, Menu, Shell, Tray} = require('electron')
+const {app, BrowserWindow, Menu, nativeImage, Shell, Tray} = require('electron')
+var fs = require('fs');
+var https = require('https');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -56,6 +58,47 @@ function createWindow () {
   ]);
 
   appIcon.setContextMenu(contextMenu);
+
+  mainWindow.webContents.on('page-favicon-updated', (event, favicons) => {
+    doWithImage(favicons[0], function(filepath) {
+      const img = nativeImage.createFromPath(filepath);
+
+      appIcon.setImage(img);
+      mainWindow.setIcon(img);
+
+      appIcon.setContextMenu(contextMenu);
+    });
+  });
+}
+
+function doWithImage(url, callback) {
+  let start = url.lastIndexOf('/');
+  let end = url.indexOf('?', start);
+
+  let filepath = 'images/' + url.slice(start + 1, end < 0 ? url.length : end);
+
+  try {
+    fs.accessSync(filepath, fs.constants.F_OK);
+
+    callback(filepath);
+  }
+  catch (err) {
+    var file = fs.createWriteStream(filepath);
+
+    var request = https.get(url, function(response) {
+      response.pipe(file);
+
+      file.on('error', function(err) {
+        fs.unlink(filepath);
+      });
+
+      file.on('finish', function() {
+        file.close(function() {
+          callback(filepath);
+        });
+      })
+    });
+  }
 }
 
 // This method will be called when Electron has finished
