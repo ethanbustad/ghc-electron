@@ -8,7 +8,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1024, height: 768})
+  mainWindow = new BrowserWindow({height: 768, title: 'GHC Electron', width: 1024})
 
   // and load the Google Hangouts Chat site
   mainWindow.loadURL('https://chat.google.com')
@@ -49,7 +49,7 @@ function createWindow () {
     }
   });
 
-  appIcon.setToolTip('GHC Electron.');
+  appIcon.setToolTip('GHC Electron');
 
   // Linux won't show the app icon unless it has a menu
   const contextMenu = Menu.buildFromTemplate([
