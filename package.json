@@ -1,12 +1,15 @@
 {
   "name": "ghc-electron",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Hangouts Chat wrapper",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/ethanbustad/ghc-electron",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethanbustad/ghc-electron.git"
+  },
   "keywords": [
     "Electron",
     "Hangouts",
@@ -15,6 +18,11 @@
   "author": "ethanbustad",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^1.8.4"
-  }
+    "electron": "^2.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ethanbustad/ghc-electron/issues"
+  },
+  "homepage": "https://github.com/ethanbustad/ghc-electron#readme",
+  "dependencies": {}
 }
