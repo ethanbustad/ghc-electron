@@ -38,6 +38,15 @@ function createWindow () {
 
   let appIcon = new Tray('images/transparent.png');
 
+  appIcon.on('click', function() {
+    if (mainWindow.isVisible()) {
+      mainWindow.minimize();
+    }
+    else {
+      mainWindow.show();
+    }
+  });
+
   appIcon.setToolTip('GHC Electron.');
 
   // Linux won't show the app icon unless it has a menu
