@@ -17,6 +17,8 @@ function createWindow () {
     mainWindow = null
   })
 
+  mainWindow.setAutoHideMenuBar(true)
+
   // open external links (with target=_blank) in default browser
   mainWindow.webContents.on('new-window', (event, url, frameName) => {
     // have to let the _blank window render, or it will block the ultimate destination as well
