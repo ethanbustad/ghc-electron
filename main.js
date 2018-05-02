@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Shell} = require('electron')
+const {app, BrowserWindow, Menu, Shell, Tray} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -35,6 +35,18 @@ function createWindow () {
       }
     }
   })
+
+  let appIcon = new Tray('images/transparent.png');
+
+  appIcon.setToolTip('GHC Electron.');
+
+  // Linux won't show the app icon unless it has a menu
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Refresh', role: 'forcereload', type: 'normal'},
+    {label: 'Quit', role: 'quit', type: 'normal'}
+  ]);
+
+  appIcon.setContextMenu(contextMenu);
 }
 
 // This method will be called when Electron has finished
