@@ -80,7 +80,11 @@ function createWindow () {
 function withSavedImages(urls, callback) {
   for (let url of urls) {
     let standard = false;
-    let filepath = 'images/icon';
+
+    let start = url.lastIndexOf('/');
+    let end = url.indexOf('.png', start);
+
+    let filepath = 'images/' + url.slice(start + 1, end);
 
     if (url.endsWith('16dp.png')) {
       standard = true;
