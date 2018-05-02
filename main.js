@@ -108,25 +108,15 @@ function withSavedImages(urls, callback) {
       standard && callback(filepath);
     }
     catch (err) {
-      let file = fs.createWriteStream(filepath);
+      try {
+        let file = fs.createWriteStream(filepath);
 
-      let request = https.get(url, function(response) {
-        response.pipe(file);
+        let request = https.get(url, function(response) {
+          response.pipe(file);
 
-        file.on('error', function(err2) {
-          console.log(err2);
+          file.on('error', function(err2) {
+            console.log(err2);
 
-          fs.unlink(filepath, (err3) => {
-            console.log(err3);
-
-            file.close(function(err4) {
-              console.log(err4);
-            });
-          });
-        });
-
-        file.on('finish', function(err2) {
-          if (file.bytesWritten == 0) {
             fs.unlink(filepath, (err3) => {
               console.log(err3);
 
@@ -134,14 +124,29 @@ function withSavedImages(urls, callback) {
                 console.log(err4);
               });
             });
-          }
-          else {
-            file.close(function(err3) {
-              standard && callback(filepath);
-            });
-          }
+          });
+
+          file.on('finish', function(err2) {
+            if (file.bytesWritten == 0) {
+              fs.unlink(filepath, (err3) => {
+                console.log(err3);
+
+                file.close(function(err4) {
+                  console.log(err4);
+                });
+              });
+            }
+            else {
+              file.close(function(err3) {
+                standard && callback(filepath);
+              });
+            }
+          });
         });
-      });
+      }
+      catch (err2) {
+        console.log(err2);
+      }
     }
   }
 }
