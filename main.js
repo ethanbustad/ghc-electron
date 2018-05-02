@@ -1,8 +1,4 @@
-const electron = require('electron')
-// Module to control application life.
-const app = electron.app
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const {app, BrowserWindow, Shell} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -15,13 +11,19 @@ function createWindow () {
   // and load the Google Hangouts Chat site
   mainWindow.loadURL('https://chat.google.com')
 
+  // Emitted when the window is closed.
+  mainWindow.on('closed', function () {
+    // Dereference the window object
+    mainWindow = null
+  })
+
   // open external links (with target=_blank) in default browser
   mainWindow.webContents.on('new-window', (event, url, frameName) => {
     // have to let the _blank window render, or it will block the ultimate destination as well
     if (frameName != '_blank') {
       event.preventDefault()
 
-      electron.shell.openExternal(url)
+      Shell.openExternal(url)
 
       // now that the ultimate destination has rendered, close the _blank window
       for (let win of BrowserWindow.getAllWindows()) {
@@ -30,12 +32,6 @@ function createWindow () {
         }
       }
     }
-  })
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object
-    mainWindow = null
   })
 }
 
