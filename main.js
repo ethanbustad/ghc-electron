@@ -66,7 +66,7 @@ function createWindow () {
   appIcon.setContextMenu(contextMenu);
 
   mainWindow.webContents.on('page-favicon-updated', (event, favicons) => {
-    doWithImage(favicons[0], function(filepath) {
+    withSavedImages(favicons, function(filepath) {
       const img = nativeImage.createFromPath(filepath);
 
       appIcon.setImage(img);
@@ -77,33 +77,72 @@ function createWindow () {
   });
 }
 
-function doWithImage(url, callback) {
-  let start = url.lastIndexOf('/');
-  let end = url.indexOf('?', start);
+function withSavedImages(urls, callback) {
+  for (let url of urls) {
+    let standard = false;
+    let filepath = 'images/icon';
 
-  let filepath = 'images/' + url.slice(start + 1, end < 0 ? url.length : end);
+    if (url.endsWith('16dp.png')) {
+      standard = true;
+      filepath += '.png';
+    }
+    else if (url.endsWith('24dp.png')) {
+      filepath += '@1.5x.png';
+    }
+    else if (url.endsWith('32dp.png')) {
+      filepath += '@2x.png';
+    }
+    else if (url.endsWith('48dp.png')) {
+      filepath += '@3x.png';
+    }
+    else if (url.endsWith('64dp.png')) {
+      filepath += '@4x.png';
+    }
+    else if (url.endsWith('256dp.png')) {
+      continue;
+    }
 
-  try {
-    fs.accessSync(filepath, fs.constants.F_OK);
+    try {
+      fs.accessSync(filepath, fs.constants.F_OK);
 
-    callback(filepath);
-  }
-  catch (err) {
-    var file = fs.createWriteStream(filepath);
+      standard && callback(filepath);
+    }
+    catch (err) {
+      let file = fs.createWriteStream(filepath);
 
-    var request = https.get(url, function(response) {
-      response.pipe(file);
+      let request = https.get(url, function(response) {
+        response.pipe(file);
 
-      file.on('error', function(err) {
-        fs.unlink(filepath);
-      });
+        file.on('error', function(err2) {
+          console.log(err2);
 
-      file.on('finish', function() {
-        file.close(function() {
-          callback(filepath);
+          fs.unlink(filepath, (err3) => {
+            console.log(err3);
+
+            file.close(function(err4) {
+              console.log(err4);
+            });
+          });
         });
-      })
-    });
+
+        file.on('finish', function(err2) {
+          if (file.bytesWritten == 0) {
+            fs.unlink(filepath, (err3) => {
+              console.log(err3);
+
+              file.close(function(err4) {
+                console.log(err4);
+              });
+            });
+          }
+          else {
+            file.close(function(err3) {
+              standard && callback(filepath);
+            });
+          }
+        });
+      });
+    }
   }
 }
 
