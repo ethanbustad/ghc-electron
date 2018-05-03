@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, nativeImage, Shell, Tray} = require('electron')
+const {app, BrowserWindow, Menu, nativeImage, shell, Tray} = require('electron')
 var fs = require('fs');
 var https = require('https');
 
@@ -33,7 +33,7 @@ function createWindow () {
     if (frameName != '_blank') {
       event.preventDefault()
 
-      Shell.openExternal(url)
+      shell.openExternal(url)
 
       // now that the ultimate destination has rendered, close the _blank window
       for (let win of BrowserWindow.getAllWindows()) {
