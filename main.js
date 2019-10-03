@@ -67,7 +67,34 @@ function createWindow () {
 
   mainWindow.webContents.on('page-favicon-updated', (event, favicons) => {
     withSavedImages(favicons, function(filepath) {
-      const img = nativeImage.createFromPath(filepath);
+      // const img = nativeImage.createFromPath(filepath);
+
+      const img = nativeImage.createEmpty();
+
+      img.addRepresentation({
+        buffer: fs.readFileSync(filepath),
+        scaleFactor: 1.0
+      });
+
+      img.addRepresentation({
+        buffer: fs.readFileSync(filepath.replace('.png', '@1.5x.png')),
+        scaleFactor: 1.5
+      });
+
+      img.addRepresentation({
+        buffer: fs.readFileSync(filepath.replace('.png', '@2x.png')),
+        scaleFactor: 2.0
+      });
+
+      img.addRepresentation({
+        buffer: fs.readFileSync(filepath.replace('.png', '@3x.png')),
+        scaleFactor: 3.0
+      });
+
+      img.addRepresentation({
+        buffer: fs.readFileSync(filepath.replace('.png', '@4x.png')),
+        scaleFactor: 4.0
+      });
 
       appIcon.setImage(img);
       mainWindow.setIcon(img);
@@ -82,7 +109,7 @@ function withSavedImages(urls, callback) {
     let standard = false;
 
     let start = url.lastIndexOf('/');
-    let end = url.indexOf('.png', start);
+    let end = url.lastIndexOf('-');
 
     let filepath = 'images/' + url.slice(start + 1, end);
 
@@ -102,7 +129,7 @@ function withSavedImages(urls, callback) {
     else if (url.endsWith('64dp.png')) {
       filepath += '@4x.png';
     }
-    else if (url.endsWith('256dp.png')) {
+    else {
       continue;
     }
 
